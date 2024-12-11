@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:xml_layout/xml_layout.dart';
+import 'package:xml_edit/xml_edit.dart';
 
 void main() {
   test('adds one to input values', () {
