@@ -198,8 +198,8 @@ late BoxConstraints oldConstraints;
           final component = widget.layoutModel.curPage.items
               .firstWhere((e) => e == itemChild);
           component.properties["position"]?.value = Offset(
-              tranformOffset.dx / scaleConstraints,
-              tranformOffset.dy / scaleConstraints);
+              (tranformOffset.dx / scaleConstraints).round().toDouble(),
+              (tranformOffset.dy / scaleConstraints).round().toDouble());
           component.properties["size"]?.value =
               Size(width / scaleConstraints, height / scaleConstraints);
           /* setState(() {
@@ -220,7 +220,7 @@ late BoxConstraints oldConstraints;
         },
         switchActive: (key) {
           setState(() {
-            activeWidget = key;
+         //   activeWidget = key;
           });
         },
         layoutModel: widget.layoutModel,

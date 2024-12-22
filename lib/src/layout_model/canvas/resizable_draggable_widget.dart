@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../component.dart';
 import '../component_widget.dart';
@@ -22,8 +21,8 @@ class ResizableDraggableWidget extends StatefulWidget {
     required this.canvasWidth,
     required this.canvasHeight,
     required this.layoutModel,
-     this.cellWidth=10.0,
-     this.cellHeight=10.0,
+    this.cellWidth = 10.0,
+    this.cellHeight = 10.0,
     required this.position,
     this.deActive,
   });
@@ -45,7 +44,8 @@ class ResizableDraggableWidget extends StatefulWidget {
   final Function(Key index)? delete;
   final Function(Key index)? switchActive;
   final Function(Key index)? deActive;
-final LayoutModel layoutModel;
+  final LayoutModel layoutModel;
+
   @override
   State<ResizableDraggableWidget> createState() =>
       _ResizableDraggableWidgetState();
@@ -93,16 +93,17 @@ late final curComponentItem;*/
     _dynamicSW = _dynamicW;
     _dynamicSH = _dynamicH;
     _child = IgnorePointer(
-        child: ComponentWidget.create(widget.child as LayoutComponent,widget.layoutModel));
+        child: ComponentWidget.create(
+            widget.child as LayoutComponent, widget.layoutModel));
     _sqColor = widget.squareColor == null ? Colors.white : widget.squareColor!;
     _bgColor = widget.bgColor == null ? Colors.amber : widget.bgColor!;
-    if ( widget.layoutModel.curItem == widget.child) {
-     // context.read<ActiveWidgetProvider>().activeKey = widget.key!;
+    if (widget.layoutModel.curItem == widget.child) {
+      // context.read<ActiveWidgetProvider>().activeKey = widget.key!;
       _showSquare = true;
-    }else{
-      _showSquare=false;
+    } else {
+      _showSquare = false;
     }
-   /* if (context.read<ActiveWidgetProvider>().activeKey == widget.key) {
+    /* if (context.read<ActiveWidgetProvider>().activeKey == widget.key) {
       context.read<LayoutModel>().curItem = widget.child!;
       _showSquare = true;
     } else {
@@ -287,7 +288,10 @@ late final curComponentItem;*/
             top: -10,
             child: IconButton(
                 onPressed: () {
-                  widget.delete!(widget.key!);
+                  setState(() {
+                    widget.layoutModel.deleteItem(widget.child!);
+                  });
+                //  widget.delete!(widget.key!);
                 },
                 icon: const Icon(Icons.delete)))
       ]),
@@ -304,69 +308,60 @@ late final curComponentItem;*/
     //_showSquare = value.curComponentItem==widget.child! ? true : false;
     return Transform.translate(
         offset: updateMoveOffset + Offset(trW, trH),
-        child:/* Consumer<ActiveWidgetProvider>(
+        child: /* Consumer<ActiveWidgetProvider>(
             builder: (context, activeProvider, child) {
           _showSquare = activeProvider.activeKey == widget.key ? true : false;
           return*/
 
-      GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            child: getResizeable(),
-            onTap: () {
-             // print(widget.key);
-              //print(context.read<ActiveWidgetProvider>().activeKey);
+            GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          child: getResizeable(),
+          onTap: () {
+            // print(widget.key);
+            //print(context.read<ActiveWidgetProvider>().activeKey);
 
-              widget.layoutModel.curItem = widget.child!;
-if (updateMoveOffset != const Offset(0, 0)) {
-  print('TAP!');
-  widget.deActive!(widget.key!);
-}
-             /* if (context.read<ActiveWidgetProvider>().activeKey !=
-                  widget.key) {
-                //context.read<ActiveWidgetProvider>().activeKey = widget.key!;
-                if (updateMoveOffset != const Offset(0, 0)) {
-                  widget.deActive!(widget.key!);
-                }
-                print('pppppppppp');
-              }*/
+            widget.layoutModel.curItem = widget.child!;
+            if (updateMoveOffset != const Offset(0, 0)) {
+              print('TAP!');
+              widget.deActive!(widget.key!);
+            }
             },
-            onPanStart: (details) {
-              if (_showSquare) startMoveOffset = details.localPosition;
-            },
-            onPanUpdate: (details) {
-              if (_showSquare) {
-                Offset intervalOffset =
-                    details.localPosition - startMoveOffset + endMoveOffset;
+          onPanStart: (details) {
+            if (_showSquare) startMoveOffset = details.localPosition;
+          },
+          onPanUpdate: (details) {
+            if (_showSquare) {
+              Offset intervalOffset =
+                  details.localPosition - startMoveOffset + endMoveOffset;
 
-                ///Если выходит за границы
-                /*  intervalOffset = Offset(
+              ///Если выходит за границы
+              /*  intervalOffset = Offset(
                         intervalOffset.dx.clamp(0 - trLastW, widget.canvasWidth - _dynamicW - trLastW),
                         intervalOffset.dy
                             .clamp(0 - trLastH, widget.canvasHeight - _dynamicH - trLastH));*/
-                if (intervalOffset.dy < -trLastH) {
-                  intervalOffset = Offset(intervalOffset.dx, 0 - trLastH);
-                }
-                setState(() {
-                  updateMoveOffset = Offset(
-                      (intervalOffset.dx / widget.cellWidth).round() *
-                          widget.cellWidth,
-                      (intervalOffset.dy / widget.cellHeight).round() *
-                          widget.cellHeight);
-                });
-                if (widget.changed != null) {
-                  widget.child!.properties["position"]?.value =
-                      updateMoveOffset + Offset(trW, trH);
-                  widget.changed!(_dynamicW, _dynamicH,
-                      updateMoveOffset + Offset(trW, trH));
-                }
+              if (intervalOffset.dy < -trLastH) {
+                intervalOffset = Offset(intervalOffset.dx, 0 - trLastH);
               }
-            },
-            onPanEnd: (details) {
-              if (_showSquare) endMoveOffset = updateMoveOffset;
-            },
+              setState(() {
+                updateMoveOffset = Offset(
+                    (intervalOffset.dx / widget.cellWidth).round() *
+                        widget.cellWidth,
+                    (intervalOffset.dy / widget.cellHeight).round() *
+                        widget.cellHeight);
+              });
+              if (widget.changed != null) {
+                widget.child!.properties["position"]?.value =
+                    updateMoveOffset + Offset(trW, trH);
+                widget.changed!(
+                    _dynamicW, _dynamicH, updateMoveOffset + Offset(trW, trH));
+              }
+            }
+          },
+          onPanEnd: (details) {
+            if (_showSquare) endMoveOffset = updateMoveOffset;
+          },
           //);
-        //}
-        )
-  );
+          //}
+        ));
   }
 }

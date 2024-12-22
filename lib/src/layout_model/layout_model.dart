@@ -611,6 +611,7 @@ class LayoutModel extends ChangeNotifier {
         default:
       }
     }
+    notifyListeners();
   }
 
   _setPageForItem(ComponentAndSourcePage page, Item item) {
