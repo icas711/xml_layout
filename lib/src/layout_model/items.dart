@@ -26,7 +26,7 @@ class ItemsState extends State<Items> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
     return _buildItem(widget._item);
-  }
+  } 
 
   Widget _buildItem(Item item) {
     Widget child;
