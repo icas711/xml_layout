@@ -11,6 +11,7 @@ import 'form_image.dart';
 import 'form_slider_button.dart';
 import 'item.dart';
 import 'page.dart';
+import 'process_element.dart';
 import 'property.dart';
 import 'root.dart';
 import 'source_table.dart';
@@ -127,6 +128,10 @@ class LayoutModel extends ChangeNotifier {
     root.items.add(stylePage);
     curItemOnPage[StylePage] = stylePage;
 
+    final processPage = ProcessPage('процессы');
+    root.items.add(processPage);
+    curItemOnPage[ProcessPage] = processPage;
+
     final StyleElement basicElement = StyleElement('базовый стиль');
     basicElement.properties['id'] =
         Property('идентификатор', UuidValue.nil, type: Uuid);
@@ -166,6 +171,15 @@ class LayoutModel extends ChangeNotifier {
       curItemOnPage[StylePage] = stylePage;
     }
 
+    if (root.items.whereType<ProcessPage>().isEmpty) {
+      final processPage = ProcessPage('процессы');
+      root.items.add(processPage);
+      curItemOnPage[ProcessPage] = processPage;
+    } else {
+      final processPage = root.items.whereType<ProcessPage>().first;
+      curItemOnPage[ProcessPage] = processPage;
+    }
+
     //добавляем базовый стиль, если отсутствует в файле
     final stylePage = root.items.whereType<StylePage>().first;
 
@@ -181,6 +195,9 @@ class LayoutModel extends ChangeNotifier {
       _setPageForItem(stylePage, basicElement);
     }
     //добавляем базовый стиль
+
+
+
     notifyListeners();
   }
 
@@ -190,6 +207,9 @@ class LayoutModel extends ChangeNotifier {
         return MapEntry(
             key,
             switch (key) {
+            'statusId' =>Property('Status Id',value, type: String),
+            'title' =>Property('title',value, type: String),
+            'creatorTitle' =>Property('Creator Title',value, type: String),
               'Uint8List' =>
                 // Property('картинка', Uint8List.fromList(value.codeUnits), type: Uint8List ),
                 Property('картинка', base64.decode(value), type: Uint8List),
@@ -315,6 +335,8 @@ class LayoutModel extends ChangeNotifier {
           item = SourcePage('');
         case 'stylePage':
           item = StylePage('');
+        case 'processPage':
+          item = ProcessPage('');
         case 'group':
           item = ComponentGroup('');
         case 'table':
@@ -355,6 +377,8 @@ class LayoutModel extends ChangeNotifier {
           item = FormHiddenField('');
         case 'styleElement':
           item = StyleElement('');
+        case 'processElement':
+          item = ProcessElement('');
       }
 
       final itemProperties = _propertiesFromMap(element['properties']);

@@ -1,7 +1,7 @@
 import 'item.dart';
 
 class ComponentAndSourcePage extends Item {
-  ComponentAndSourcePage(type, name) : super(type, name);
+  ComponentAndSourcePage(super.type, super.name);
 }
 
 class ComponentPage extends ComponentAndSourcePage {
@@ -14,4 +14,8 @@ class SourcePage extends ComponentAndSourcePage {
 
 class StylePage extends ComponentAndSourcePage {
   StylePage(name) : super("stylePage", name);
+}
+
+class ProcessPage extends ComponentAndSourcePage {
+  ProcessPage(name) : super("processPage", name);
 }

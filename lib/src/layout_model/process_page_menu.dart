@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'menu.dart';
 import 'item.dart';
-import 'style_element.dart';
+import 'process_element.dart';
 
-class StylePageMenu extends ComponentAndSourceMenu {
-  StylePageMenu(super.layoutModel, super.target, {super.onChanged});
+class ProcessPageMenu extends ComponentAndSourceMenu {
+  ProcessPageMenu(super.layoutModel, super.target, {super.onChanged});
 
   @override
   List<PopupMenuEntry<Item>> getComponentMenu(void Function(Item)? onChanged) {
     return [
       PopupMenuItem(
-        child: const Text("Добавить стиль"),
+        child: const Text("Добавить процесс"),
         onTap: () {
-
-          var item = StyleElement("стиль");
+          var item = ProcessElement("процесс");
           layoutModel.addItem(target, item);
           onChanged!(item);
-
         },
       )
-
     ];
   }
 }

@@ -13,6 +13,8 @@ import 'form_slider_button_menu.dart';
 import 'item.dart';
 import 'layout_model.dart';
 import 'page.dart';
+import 'process.dart';
+import 'process_page_menu.dart';
 import 'style.dart';
 import 'style_element.dart';
 import 'style_element_menu.dart';
@@ -108,9 +110,12 @@ class ComponentAndSourceMenu {
       return SourcePageMenu(layoutModel, target, onChanged: onChanged);
     } else if (target is StylePage) {
       return StylePageMenu(layoutModel, target, onChanged: onChanged);
-    } else if (target is LayoutComponent ||
+    } else if (target is ProcessPage) {
+      return ProcessPageMenu(layoutModel, target, onChanged: onChanged);
+    }else if (target is LayoutComponent ||
         target is LayoutSource ||
-        target is LayoutStyle) {
+        target is LayoutStyle ||
+        target is LayoutProcess) {
       switch (target.runtimeType) {
         case ComponentTable:
           return ComponentTableMenu(layoutModel, target,

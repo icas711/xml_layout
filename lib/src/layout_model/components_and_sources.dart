@@ -1,7 +1,10 @@
+import 'package:xml_edit/src/layout_model/process.dart';
+
 import 'canvas/main_canvas.dart';
 import 'package:flutter/material.dart';
 import 'layout_model.dart';
 import 'page.dart';
+import 'process_widget.dart';
 import 'style.dart';
 import 'style_widget.dart';
 
@@ -9,7 +12,8 @@ class ComponentsAndSources extends StatelessWidget {
   final ComponentAndSourcePage curPage;
   final LayoutModel layoutModel;
 final BoxConstraints constraints;
-  const ComponentsAndSources(this.curPage, this.layoutModel, this.constraints, {super.key});
+  final ScreenSizeEnum screenSize;
+  const ComponentsAndSources(this.curPage, this.layoutModel, this.constraints,this.screenSize, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +25,13 @@ final BoxConstraints constraints;
                 StyleWidget.create(curPage.items[index] as LayoutStyle),
           ),
         );
-      } else if (curPage is ComponentPage) {
+      }else if (curPage is ComponentPage) {
         return curPage.items.isNotEmpty
             ? MainCanvas(
                 items: curPage.items,
                 constraints: constraints,
                 layoutModel: layoutModel,
+            screenSize:screenSize,
               )
             : Container();
       } else {
@@ -35,6 +40,7 @@ final BoxConstraints constraints;
           items: curPage.items,
           constraints: constraints,
           layoutModel: layoutModel,
+          screenSize:screenSize,
         );
       }
 
@@ -85,4 +91,21 @@ final BoxConstraints constraints;
       ));
     return componentsItems;
   }*/
+}
+
+enum ScreenSizeEnum {
+  mobile(width: 360, height: 720, title: 'мобильный', value: true),
+  desktop(width: 720, height: 720, title: 'десктоп', value: false);
+
+  final double width;
+  final double height;
+  final String title;
+  final bool value;
+
+  const ScreenSizeEnum(
+      {required this.height,
+        required this.width,
+        required this.title,
+        required this.value});
+
 }

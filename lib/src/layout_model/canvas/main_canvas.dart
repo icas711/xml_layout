@@ -3,6 +3,7 @@ import 'package:collection/collection.dart' show DeepCollectionEquality;
 
 import '../component.dart';
 import '../component_widget.dart';
+import '../components_and_sources.dart';
 import '../item.dart';
 import '../layout_model.dart';
 import 'grid_background_widget.dart';
@@ -12,12 +13,13 @@ class MainCanvas extends StatefulWidget {
   final BoxConstraints constraints;
   final List<Item> items;
   final LayoutModel layoutModel;
-
+  final ScreenSizeEnum screenSize;
   const MainCanvas({
     super.key,
     required this.layoutModel,
     required this.items,
     required this.constraints,
+    required this.screenSize,
   });
 
   @override
@@ -31,8 +33,8 @@ class _MainCanvasState extends State<MainCanvas> {
   double wrappedWidth = 0;
   double wrappedHeight = 0;
   Offset position = const Offset(0, 0);
-  double _canvasHeight = 720;
-  double _canvasWidth = 360;
+  late double _canvasHeight;
+  late double _canvasWidth ;
   final TransformationController _transform = TransformationController();
   double scaleConstraints = 1.0;
   double scaleSize = 1;
@@ -51,7 +53,7 @@ late BoxConstraints oldConstraints;
     oldConstraints=widget.constraints;
     _canvasWidth = widget.constraints.maxWidth-20;
     _canvasHeight = widget.constraints.maxHeight-20;
-    scaleConstraints = _canvasWidth / 360;
+    scaleConstraints = _canvasWidth / widget.screenSize.width;
     cellWidth = cellWidth * scaleConstraints;
     cellHeight = cellHeight * scaleConstraints;
     viewport = Rect.fromLTRB(0, 0, _canvasWidth, _canvasHeight);
@@ -71,7 +73,7 @@ late BoxConstraints oldConstraints;
        oldConstraints=widget.constraints;
        _canvasWidth = widget.constraints.maxWidth-20;
        _canvasHeight = widget.constraints.maxHeight-20;
-       scaleConstraints = _canvasWidth / 360;
+       scaleConstraints = _canvasWidth / widget.screenSize.width;
        cellWidth = cellWidth * scaleConstraints.truncateToDouble();
        cellHeight = cellHeight * scaleConstraints.truncateToDouble();
        viewport = Rect.fromLTRB(0, 0, _canvasWidth, _canvasHeight);
